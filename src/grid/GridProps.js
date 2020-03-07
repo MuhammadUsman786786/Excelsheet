@@ -8,7 +8,7 @@ class Grid extends Component {
 		const {rowHeight, adjust, autoWidth, columns, data, editable, multiselection, selection} = this.props;
 		this.grid = new GridDHX(this.el, {
 			rowHeight: rowHeight,
-			adjust: adjust,
+			adjust: false,
 			autoWidth: autoWidth,
 			columns: columns,
 			data: data,
@@ -30,32 +30,14 @@ class Grid extends Component {
 }
 
 class GridProps extends Component {
-	getData() {
-		const data = new DataCollection();
-		data.load(`${ process.env.PUBLIC_URL }/static/grid.json`);
-		return data;
-	}
-	
 	render() {
-		const columns = [
-			{id: "country", header: [ {text: "country"} ]},
-			{id: "population", header: [ {text: "population"} ]},
-			{id: "yearlyChange", header: [ {text: "yearlyChange"} ]},
-			{id: "netChange", header: [ {text: "netChange"} ]},
-			{id: "destiny", header: [ {text: "destiny"} ]},
-			{id: "area", header: [ {text: "area"} ]},
-			{id: "migrants", header: [ {text: "migrants"} ]},
-			{id: "fert", header: [ {text: "fert"} ]},
-			{id: "age", header: [ {text: "age"} ]},
-			{id: "urban", header: [ {text: "urban"} ]},
-		];
 		return (
 			<Grid
-				data={ this.getData() }
+				data={ this.props.dataList }
 				rowHeight={ 60 }
 				adjust={ true }
 				autoWidth={ true }
-				columns={ columns }
+				columns={ this.props.columns }
 				editable={ true }
 				multiselection={ true }
 				selection={ "complex" }

@@ -1,29 +1,39 @@
 import React, {Component} from "react";
-import {connect} from "react-redux";
-import Grid from "./Grid";
-import GridCdn from "./GridCdn";
-
-import GridConfigured from "./GridConfigured";
 import GridProps from "./GridProps";
-import GridData from "./GridData";
-import GridEvents from "./GridEvents";
+import CSVReader from 'react-csv-reader'
+import {getFormattedDataList} from "../utils/transform";
+import * as _ from 'lodash'
 
 class GridPage extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			columns: [],
+			dataList: []
+		}
+	}
 	
+	onLoadData = (fileData) => {
+		const {columns, dataList} = getFormattedDataList(fileData) || {};
+		this.setState({columns, dataList})
+	};
 	
 	render() {
 		return (
 			<div style={ styles.container }>
-				<GridProps/>
+				<CSVReader onFileLoaded={ this.onLoadData }/>
+				{ !_.isEmpty(this.state.dataList) &&
+				<GridProps columns={ this.state.columns } dataList={ this.state.dataList }/>
+				}
 			</div>
 		);
 	}
 }
 
-export default connect(state => state)(GridPage);
+export default GridPage;
 
 const styles = {
 	container: {
 		margin: 20
 	}
-}
+};
